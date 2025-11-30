@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# Datasets (Optional: remove if you want to commit data)
+# machine failure.csv
+# submission.csv
+
+# Artifacts
+*.png
