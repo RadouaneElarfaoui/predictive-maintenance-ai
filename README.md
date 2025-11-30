@@ -29,12 +29,18 @@ Nous utilisons l'écosystème Python Data Science :
     pip install pandas numpy scikit-learn matplotlib seaborn
     ```
 
-2.  **Lancer l'analyse :**
+2.  **Lancer l'analyse Python :**
     ```bash
     python main.py
     ```
 
+3.  **Lancer l'analyse MATLAB :**
+    *   Ouvrez MATLAB.
+    *   Ouvrez le fichier `main.m`.
+    *   Cliquez sur **Run**.
+
 ## 📂 Structure des Fichiers
-*   `src/data_loader.py` : Chargement et nettoyage des données.
-*   `src/neural_network.py` : Logique du réseau de neurones.
-*   `main.py` : Script principal orchestrant l'ensemble.
+*   `src/` : Code source Python.
+*   `main.py` : Script principal Python.
+*   `main.m` : Script principal MATLAB (Équivalent).
+
