@@ -1,0 +1,299 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{charter}
+\usepackage{pdfpages}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{titlesec}
+
+% Définition des couleurs pour les titres
+\definecolor{titleblue}{RGB}{0,80,150} % Un bleu foncé
+\definecolor{sectionblue}{RGB}{0,120,200} % Un bleu moyen
+\definecolor{subsectionteal}{RGB}{0,150,130} % Un bleu-vert
+
+% Formatage des titres
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{titleblue}}
+  {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{sectionblue}}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{subsectionteal}}
+  {\thesubsection}{1em}{}
+
+\geometry{hmargin=2.5cm,vmargin=2.5cm}
+
+% Configuration pour le code
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    literate={é}{{\'e}}1 {è}{{\`e}}1 {à}{{\`a}}1 {ç}{{\c{c}}}1 {œ}{{\oe}}1 {ù}{{\`u}}1 {É}{{\'E}}1 {È}{{\`E}}1 {À}{{\`A}}1 {Ç}{{\c{C}}}1 {Œ}{{\OE}}1 {Ù}{{\`U}}1 {î}{{\^i}}1 {ê}{{\^e}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+}
+
+\lstset{style=mystyle}
+
+\title{\textbf{Rapport de Projet}\\ \Large Application de l'IA en Mécanique : Maintenance Prédictive}
+\author{Étudiant}
+\date{\today}
+
+\begin{document}
+
+\includepdf[pages=1]{pdg.pdf}
+% \maketitle
+
+% \tableofcontents
+% \newpage
+
+\chapter{Introduction}
+Ce projet explore l'application des techniques d'Intelligence Artificielle, spécifiquement les réseaux de neurones, au domaine de l'ingénierie mécanique. L'objectif principal est de mettre en place un système de maintenance prédictive capable d'anticiper les pannes de machines industrielles.
+
+Nous utilisons l'environnement MATLAB et ses boîtes à outils spécialisées (Neural Network Toolbox) pour développer et entraîner nos modèles.
+
+\chapter{Contexte et Objectifs}
+\section{Problématique}
+Dans l'industrie moderne (Industrie 4.0), la fiabilité des équipements est cruciale. Les pannes inattendues entraînent des arrêts de production coûteux, des pertes de matières premières et parfois des risques pour la sécurité des opérateurs.
+
+Les approches traditionnelles de maintenance présentent des limites importantes :
+\begin{itemize}
+    \item \textbf{Maintenance corrective :} Elle consiste à intervenir uniquement après la panne. Cette approche est réactive et engendre des coûts d'arrêt de production non maîtrisés.
+    \item \textbf{Maintenance préventive :} Elle repose sur des interventions planifiées à intervalles fixes (ex: toutes les 1000 heures). Bien que plus sûre, elle conduit souvent à remplacer des composants encore sains, ce qui constitue un gaspillage économique.
+\end{itemize}
+
+La problématique centrale de ce projet est donc la suivante : \textit{Comment utiliser les données collectées par les capteurs industriels pour anticiper les défaillances avec précision et n'intervenir qu'au moment nécessaire ?}
+
+\section{Objectif du Projet}
+L'objectif est de développer un système de maintenance prédictive intelligent. Il s'agit de concevoir un modèle de réseau de neurones capable de classifier l'état de la machine en temps réel (0 = Fonctionnel, 1 = Panne) à partir des paramètres opérationnels.
+
+\chapter{Méthodologie}
+\section{Description des Données}
+Le jeu de données utilisé pour ce projet est un enregistrement détaillé des conditions de fonctionnement d'une machine-outil. Chaque ligne du fichier \texttt{machine failure.csv} représente un cycle de production et contient les informations collectées par divers capteurs.
+
+\subsection{Variables Explicatives (Features)}
+Les variables d'entrée, utilisées pour prédire l'état de la machine, sont les suivantes. Elles simulent les données qu'on obtiendrait de capteurs industriels.
+
+\begin{itemize}
+    \item \textbf{Type de produit (colonne 'Type')} : Indique la variante de qualité du produit fabriqué (L = Faible, M = Moyenne, H = Haute). Cette variable catégorielle a un impact sur les contraintes (vitesse, couple) appliquées à la machine.
+
+    \item \textbf{Température de l'air [K] (colonne 'Air temperature [K]')} : Mesure la température ambiante autour de la machine.
+    \begin{itemize}
+        \item \textbf{Capteur associé :} Un \textbf{thermomètre} ou une \textbf{sonde de température} placé à proximité de la machine.
+    \end{itemize}
+
+    \item \textbf{Température du processus [K] (colonne 'Process temperature [K]')} : Représente la température de la pièce en cours d'usinage ou de l'outil. C'est un indicateur critique de la santé du processus.
+    \begin{itemize}
+        \item \textbf{Capteur associé :} Un \textbf{thermocouple} en contact avec la pièce ou un \textbf{pyromètre infrarouge} qui mesure la température à distance.
+    \end{itemize}
+
+    \item \textbf{Vitesse de rotation [rpm] (colonne 'Rotational speed [rpm]')} : Indique la vitesse de rotation de la broche principale de la machine, en tours par minute.
+    \begin{itemize}
+        \item \textbf{Capteur associé :} Un \textbf{tachymètre} ou un \textbf{codeur rotatif} monté sur l'axe de la broche.
+    \end{itemize}
+
+    \item \textbf{Couple [Nm] (colonne 'Torque [Nm]')} : Mesure la force de torsion appliquée par la broche sur l'outil. Une augmentation anormale du couple peut signaler une usure d'outil ou un problème de coupe.
+    \begin{itemize}
+        \item \textbf{Capteur associé :} Un \textbf{capteur de couple} intégré à la broche, ou une estimation calculée à partir du courant consommé par le moteur de la broche.
+    \end{itemize}
+
+    \item \textbf{Usure de l'outil [min] (colonne 'Tool wear [min]')} : Représente le temps d'utilisation cumulé de l'outil de coupe. Ce n'est pas une mesure directe de capteur, mais une valeur suivie par le système de contrôle de la machine (automate programmable) pour estimer l'état d'usure.
+\end{itemize}
+
+\subsection{Variable Cible (Target)}
+La variable que nous cherchons à prédire est :
+\begin{itemize}
+    \item \textbf{Machine Failure (colonne 'Machine failure')} : Une variable binaire qui indique si une panne est survenue durant le cycle. \textbf{0} signifie un fonctionnement normal, et \textbf{1} signifie qu'une défaillance a eu lieu. C'est la variable cible principale de notre modèle.
+\end{itemize}
+
+\subsection{Autres Informations Contextuelles}
+Le jeu de données contient également des colonnes qui ne sont pas utilisées pour l'entraînement du modèle, mais qui donnent un contexte sur le type de panne.
+\begin{itemize}
+    \item \textbf{UDI} et \textbf{Product ID} : Des identifiants uniques pour chaque enregistrement et produit.
+    \item \textbf{TWF (Tool Wear Failure)} : Indicateur binaire signalant une panne due à l'usure de l'outil.
+    \item \textbf{HDF (Heat Dissipation Failure)} : Indicateur de panne liée à une surchauffe.
+    \item \textbf{PWF (Power Failure)} : Indicateur de panne due à un problème d'alimentation électrique.
+    \item \textbf{OSF (Overstrain Failure)} : Indicateur de panne causée par une contrainte excessive sur l'outil.
+    \item \textbf{RNF (Random Failure)} : Indicateur pour les pannes aléatoires.
+\end{itemize}
+Dans notre projet, la colonne \texttt{MachineFailure} est une agrégation de ces différents types de pannes.
+
+\section{Outils Utilisés}
+Nous avons utilisé l'environnement MATLAB pour l'ensemble du projet, de la préparation des données à l'entraînement du réseau de neurones.
+
+\begin{itemize}
+    \item \textbf{Langage :} MATLAB
+    \item \textbf{Manipulation de données :} Matrices et tableaux MATLAB
+    \item \textbf{Modélisation :} Neural Network Toolbox (`fitnet`, `nntool`)
+    \item \textbf{Visualisation :} Fonctions graphiques natives (`plot`, `confusionchart`)
+\end{itemize}
+
+\section{Implémentation sous MATLAB}
+Cette section détaille les étapes clés de l'implémentation du projet en utilisant le langage MATLAB.
+
+\subsection{Chargement et Préparation des Données}
+La première étape consiste à charger les données depuis le fichier CSV et à les préparer pour le réseau de neurones. Contrairement à Python où les données sont souvent structurées en (Samples x Features), la \textit{Neural Network Toolbox} de MATLAB attend généralement des données en (Features x Samples).
+
+\begin{lstlisting}[language=Matlab, caption=Chargement et prétraitement des données]
+% Chargement des données
+filename = 'machine failure.csv';
+opts = detectImportOptions(filename);
+opts.SelectedVariableNames = {'Type', 'AirTemperature_K_', ...
+    'ProcessTemperature_K_', 'RotationalSpeed_rpm_', ...
+    'Torque_Nm_', 'ToolWear_min_', 'MachineFailure'};
+data = readtable(filename, opts);
+
+% Conversion de la variable catégorielle 'Type' en numérique
+data.Type = grp2idx(data.Type);
+
+% Séparation Features (X) et Target (Y) et Transposition
+X = [data.Type, data.AirTemperature_K_, data.ProcessTemperature_K_, ...
+     data.RotationalSpeed_rpm_, data.Torque_Nm_, data.ToolWear_min_]'; 
+Y = data.MachineFailure'; 
+\end{lstlisting}
+
+Nous utilisons \texttt{readtable} pour lire le fichier et \texttt{grp2idx} pour convertir la colonne catégorielle "Type" (L, M, H) en indices numériques (1, 2, 3), ce qui est nécessaire pour le traitement par le réseau de neurones.
+
+\subsection{Architecture du Réseau de Neurones}
+Nous utilisons la fonction \texttt{patternnet} qui est spécifiquement conçue pour les problèmes de reconnaissance de formes (classification). L'architecture choisie comporte deux couches cachées de 100 et 50 neurones respectivement.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{src/NN_Training_Tool_Summary.jpg}
+    \caption{Résumé de l'outil d'entraînement (MATLAB)}
+    \label{fig:nn_arch}
+\end{figure}
+
+\begin{lstlisting}[language=Matlab, caption=Création du réseau de neurones]
+% Création d'un réseau de reconnaissance de motifs
+hiddenLayerSize = [100, 50];
+net = patternnet(hiddenLayerSize);
+\end{lstlisting}
+
+\subsection{Entraînement}
+Avant l'entraînement, nous définissons la répartition des données : 70\% pour l'entraînement, 15\% pour la validation et 15\% pour le test. La fonction \texttt{train} se charge ensuite d'optimiser les poids du réseau.
+
+\begin{lstlisting}[language=Matlab, caption=Configuration et entraînement]
+% Division des données
+net.divideParam.trainRatio = 70/100;
+net.divideParam.valRatio = 15/100;
+net.divideParam.testRatio = 15/100;
+
+% Entraînement
+[net, tr] = train(net, X, Y);
+\end{lstlisting}
+
+\subsection{Évaluation}
+Une fois le modèle entraîné, nous évaluons ses performances sur le jeu de test (données non vues durant l'entraînement).
+
+\begin{lstlisting}[language=Matlab, caption=Évaluation du modèle]
+% Prédiction sur les données de test
+XTest = X(:, tr.testInd);
+YTest = Y(:, tr.testInd);
+YPred = net(XTest);
+
+% Conversion des probabilités en classes (0 ou 1)
+YPredClass = round(YPred);
+
+% Calcul de la précision (Accuracy)
+accuracy = sum(YPredClass == YTest) / length(YTest);
+fprintf('Précision sur le jeu de test : %.2f%%\n', accuracy * 100);
+\end{lstlisting}
+
+Nous utilisons la fonction \texttt{plotconfusion} pour visualiser les performances détaillées.
+
+\chapter{Résultats et Analyse}
+\section{Performance du Modèle}
+L'évaluation du modèle est réalisée sur l'ensemble de test, qui représente 15\% des données et n'a pas été utilisé durant l'entraînement. Les performances sur cet ensemble sont donc le meilleur indicateur de la capacité du modèle à généraliser sur de nouvelles données.
+
+Le modèle atteint une précision globale (\textit{Accuracy}) de \textbf{97.5\%} sur l'ensemble de test, ce qui indique un très bon taux de classification générale.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{src/Overall_Confusion_Matrices.jpg}
+    \caption{Matrices de Confusion pour les ensembles d'entraînement, de validation, de test et pour la totalité des données.}
+    \label{fig:confusion_matrix_matlab}
+\end{figure}
+
+Pour une analyse plus fine, nous devons examiner les performances pour chaque classe :
+
+\begin{itemize}
+    \item \textbf{Classe 0 (Fonctionnement normal) :} Le modèle est extrêmement fiable pour identifier les situations normales. Il atteint une \textbf{précision de 98.0\%} (les prédictions de normalité sont correctes à 98\%) et un \textbf{rappel de 99.4\%} (il identifie 99.4\% de tous les cas normaux).
+
+    \item \textbf{Classe 1 (Panne) :} La détection des pannes est une tâche plus difficile, notamment en raison du déséquilibre des classes (les pannes sont rares).
+    \begin{itemize}
+        \item La \textbf{précision est de 69.2\%}. Cela signifie que lorsque le modèle prédit une panne, cette prédiction est correcte dans 69.2\% des cas.
+        \item Le \textbf{rappel (ou sensibilité) est de 38.3\%}. Cela indique que le modèle parvient à détecter 38.3\% de l'ensemble des pannes réelles.
+    \end{itemize}
+\end{itemize}
+
+Le rappel pour la classe "Panne" est un axe d'amélioration potentiel. Bien que le modèle soit globalement précis, il ne détecte pas encore une majorité des pannes (un peu plus d'une sur trois). Selon le contexte industriel, il pourrait être préférable d'améliorer ce rappel, même au risque de créer plus de fausses alertes (baisse de la précision), afin de ne manquer aucune défaillance critique.
+
+\section{Analyse Approfondie des Courbes}
+Les graphiques générés par MATLAB nous offrent une vision plus détaillée du comportement du modèle.
+
+\subsection{Courbe ROC (Receiver Operating Characteristic)}
+La courbe ROC illustre le compromis entre le taux de vrais positifs (rappel) et le taux de faux positifs. Une courbe proche du coin supérieur gauche indique une excellente performance.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{src/ROC_Curves_Plot.jpg}
+    \caption{Courbes ROC pour les différents ensembles de données.}
+    \label{fig:roc}
+\end{figure}
+Les courbes pour les ensembles de test et de validation sont très bonnes, confirmant la capacité du modèle à discriminer les classes.
+
+\subsection{Performance de Validation}
+L'évolution de l'erreur (Cross-Entropy) au fil des époques montre que le modèle a convergé efficacement. La meilleure performance de validation a été atteinte à l'époque 37, après quoi l'entraînement s'est arrêté pour éviter le sur-apprentissage.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{src/MSE_Performance_Plot.jpg}
+    \caption{Performance de validation (Cross-Entropy) en fonction des époques.}
+    \label{fig:val_perf}
+\end{figure}
+
+\subsection{Histogramme d'Erreur}
+L'histogramme des erreurs montre que la majorité des erreurs de prédiction sont très proches de zéro, ce qui est un signe de bonne performance.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{src/Error_Histogram_Plot.jpg}
+    \caption{Histogramme des erreurs de prédiction.}
+    \label{fig:err_hist}
+\end{figure}
+
+\subsection{État de l'Entraînement}
+Ce graphique confirme que l'entraînement s'est arrêté après 6 échecs consécutifs d'amélioration sur l'ensemble de validation, ce qui est une bonne pratique pour éviter le sur-apprentissage.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{src/Training_State_Gradient_Plot.jpg}
+    \caption{État de l'entraînement (gradient et contrôle de validation).}
+    \label{fig:train_state}
+\end{figure}
+
+\chapter{Conclusion}
+Ce projet a permis de démontrer l'efficacité de l'IA pour la maintenance prédictive. L'utilisation de MATLAB et de sa Neural Network Toolbox a facilité la mise en œuvre rapide et efficace d'un réseau de neurones performant pour la détection de pannes.
+
+\end{document}
