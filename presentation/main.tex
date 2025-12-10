@@ -1,0 +1,206 @@
+\documentclass{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{whale}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{enumerate}
+
+% Meta-data
+\title[Maintenance Prédictive]{Application de l'IA en Mécanique : Maintenance Prédictive}
+\subtitle{Projet de fin d'étude}
+\author{Étudiant}
+\institute[]{Département de Génie Mécanique}
+\date{\today}
+
+\begin{document}
+
+% Title Page
+\begin{frame}
+    \titlepage
+\end{frame}
+
+% Table of Contents
+\begin{frame}{Plan de la présentation}
+    \tableofcontents
+\end{frame}
+
+% Section 1: Introduction
+\section{Introduction}
+\begin{frame}{Introduction}
+    \begin{itemize}
+        \item \textbf{Contexte :} Convergence de l'ingénierie mécanique et de l'intelligence artificielle (Industrie 4.0).
+        \item \textbf{Sujet :} Maintenance prédictive des machines industrielles.
+        \item \textbf{Objectif :} Anticiper les pannes pour optimiser la production et réduire les coûts.
+        \item \textbf{Approche :} Utilisation de réseaux de neurones artificiels (RNA) sous MATLAB.
+    \end{itemize}
+\end{frame}
+
+% Section 2: Contexte et Objectifs
+\section{Contexte et Objectifs}
+\begin{frame}{Problématique}
+    Les approches traditionnelles de maintenance présentent des limites :
+    \vspace{0.5cm}
+    \begin{itemize}
+        \item \textbf{Maintenance Corrective :} 
+        \begin{itemize}
+            \item Réactive (après la panne).
+            \item Coûts d'arrêt imprévisibles et élevés.
+        \end{itemize}
+        \item \textbf{Maintenance Préventive :}
+        \begin{itemize}
+            \item Planifiée (intervalles fixes).
+            \item Gaspillage potentiel (remplacement de pièces saines).
+        \end{itemize}
+    \end{itemize}
+    \vspace{0.5cm}
+    \textbf{Question :} Comment intervenir au \textit{bon moment} ?
+\end{frame}
+
+\begin{frame}{Objectif du Projet}
+    Développer un système de \textbf{Maintenance Prédictive Intelligent}.
+    \vspace{0.5cm}
+    \begin{block}{Mission}
+        Concevoir et entraîner un modèle de réseau de neurones capable de classifier l'état de la machine en temps réel :
+        \begin{itemize}
+            \item \textbf{0} : Fonctionnement Normal
+            \item \textbf{1} : Panne Détectée
+        \end{itemize}
+    \end{block}
+    \vspace{0.5cm}
+    Basé sur les données de capteurs (température, vitesse, couple, etc.).
+\end{frame}
+
+% Section 3: Méthodologie
+\section{Méthodologie}
+\begin{frame}{Description des Données}
+    Données : \texttt{machine failure.csv} (Conditions de fonctionnement d'une machine-outil).
+    
+    \textbf{Variables d'entrée (Features) :}
+    \begin{itemize}
+        \item \textbf{Type de produit} (L, M, H) : Qualité/Contraintes.
+        \item \textbf{Température de l'air [K]} : Ambiance.
+        \item \textbf{Température du processus [K]} : Pièce/Outil.
+        \item \textbf{Vitesse de rotation [rpm]} : Broche.
+        \item \textbf{Couple [Nm]} : Force de torsion.
+        \item \textbf{Usure de l'outil [min]} : Temps d'utilisation cumulé.
+    \end{itemize}
+    
+    \textbf{Variable Cible (Target) :}
+    \begin{itemize}
+        \item \textbf{Machine Failure} (0 ou 1).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Implémentation sous MATLAB}
+    \textbf{Outils :} MATLAB + Neural Network Toolbox.
+    
+    \vspace{0.3cm}
+    \textbf{Étapes clés :}
+    \begin{enumerate}
+        \item \textbf{Préparation :} Chargement CSV, conversion 'Type' (catégoriel $\to$ numérique), transposition (Features $\times$ Samples).
+        \item \textbf{Architecture :} \texttt{patternnet} (Reconnaissance de formes).
+        \begin{itemize}
+            \item 2 couches cachées : 100 et 50 neurones.
+        \end{itemize}
+        \item \textbf{Entraînement :} 
+        \begin{itemize}
+            \item Répartition : 70\% Train, 15\% Val, 15\% Test.
+            \item Algorithme : Scaled Conjugate Gradient (trainscg).
+        \end{itemize}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Architecture du Réseau}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{../rapport/src/NN_Training_Tool_Summary.jpg}
+        \caption{Résumé de l'architecture et de l'entraînement (MATLAB)}
+    \end{figure}
+\end{frame}
+
+% Section 4: Résultats
+\section{Résultats et Analyse}
+\begin{frame}{Performance Globale}
+    \begin{alertblock}{Résultats sur l'ensemble de Test}
+        Le modèle atteint une précision (\textit{Accuracy}) de \textbf{97.5\%}.
+    \end{alertblock}
+    
+    \vspace{0.5cm}
+    Analyse par classe :
+    \begin{itemize}
+        \item \textbf{Classe 0 (Normal) :} Excellente détection.
+        \begin{itemize}
+            \item Précision : 98.0\%
+            \item Rappel : 99.4\%
+        \end{itemize}
+        \item \textbf{Classe 1 (Panne) :} Plus complexe (déséquilibre des classes).
+        \begin{itemize}
+            \item Précision : 69.2\%
+            \item Rappel : 38.3\%
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Matrices de Confusion}
+    \begin{figure}
+        \centering
+        \includegraphics[height=0.75\textheight]{../rapport/src/Overall_Confusion_Matrices.jpg}
+        \caption{Matrices de confusion (Train, Val, Test, All)}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Courbes ROC}
+    La courbe ROC montre la capacité de discrimination du modèle.
+    \begin{figure}
+        \centering
+        \includegraphics[height=0.65\textheight]{../rapport/src/ROC_Curves_Plot.jpg}
+        \caption{Courbes ROC : Proches du coin supérieur gauche (Excellente performance).}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Validation et Erreur}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{../rapport/src/MSE_Performance_Plot.jpg}
+            \caption{Performance (Cross-Entropy)}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{../rapport/src/Error_Histogram_Plot.jpg}
+            \caption{Histogramme des erreurs}
+        \end{column}
+    \end{columns}
+    \vspace{0.2cm}
+    \footnotesize Pas de sur-apprentissage majeur (arrêt précoce à l'époque 37).
+\end{frame}
+
+% Section 5: Conclusion
+\section{Conclusion}
+\begin{frame}{Conclusion}
+    \begin{itemize}
+        \item \textbf{Réussite technique :} Mise en place d'un réseau de neurones performant (97.5\% de précision globale) avec MATLAB.
+        \item \textbf{Maintenance Prédictive :} Preuve de concept validée pour l'anticipation des pannes à partir de données capteurs.
+        \item \textbf{Perspectives :}
+        \begin{itemize}
+            \item Améliorer le rappel sur la classe "Panne" (gestion du déséquilibre des données).
+            \item Tester d'autres architectures (Deep Learning, LSTM pour les séries temporelles).
+            \item Déploiement sur un système temps réel.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \centering
+    \Huge \textbf{Merci de votre attention}
+    
+    \vspace{1cm}
+    \Large Avez-vous des questions ?
+\end{frame}
+
+\end{document}
