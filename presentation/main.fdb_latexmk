@@ -1,12 +1,12 @@
 # Fdb version 4
-["pdflatex"] 1765467417.62557 "c:/Users/Administrator/Desktop/AI Projet/predictive-maintenance-ai/presentation/main.tex" "main.pdf" "main" 1765467430.00279 0
+["pdflatex"] 1765476868.00352 "c:/Users/Administrator/Desktop/AI Projet/predictive-maintenance-ai/presentation/main.tex" "main.pdf" "main" 1765476881.92468 0
   "../linear_regression.png" 1765406311 1451588 a3d0226f47429712f9112627b66c82e1 ""
   "../neural_network_architecture.png" 1765406340 1439408 bc4769abc357a655f57aeae036ddc486 ""
   "../rapport/src/Error_Histogram_Plot.jpg" 1765399624 52693 2b96175c36428bed862ee3ad4ca9e7d1 ""
   "../rapport/src/MSE_Performance_Plot.jpg" 1765399624 44088 1e6f44afda76159e47a2d158e3198047 ""
   "../rapport/src/NN_Training_Tool_Summary.jpg" 1765399624 66230 a7faf4eb4b9c8f941ca04796a172d9aa ""
-  "../rapport/src/Overall_Confusion_Matrices.jpg" 1765399624 112894 f1c1d723f1aa15c23eb197521a46816b ""
   "../rapport/src/ROC_Curves_Plot.jpg" 1765399624 70090 0e999f376128482c8d046c9259b4f6f7 ""
+  "../rapport/src/matlab.jpg" 1764945623 39511 3c34045b7763c086a245a18d83ba413b ""
   "C:/Users/Administrator/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1765400481 345202 1d6e2cf83914750f77f12c9007df468e ""
   "C:/Users/Administrator/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecsi1095.pk" 1765055496 26868 b327c5b726dc792624ad77278025cdd3 ""
   "C:/Users/Administrator/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecss0600.pk" 1765042017 12340 24322b1cb2ee516f350d98f8f485a0c7 ""
@@ -239,12 +239,12 @@
   "C:/Users/Administrator/AppData/Local/Programs/MiKTeX/tex/latex/translator/translator.sty" 1622471510 8765 56d370785f0143111ff9898b5adfe08e ""
   "C:/Users/Administrator/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/Administrator/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1729265222 55384 b454dec21c2d9f45ec0b793f0995b992 ""
-  "c:/Users/Administrator/Desktop/AI Projet/predictive-maintenance-ai/presentation/main.tex" 1765467404 16798 3715544beae41aa3a3bf8829f1b4448a ""
-  "main.aux" 1765467429 6188 86c4a635e78fd8724528e272d0f1ca2f "pdflatex"
-  "main.nav" 1765467429 3876 8cbb88f81fff79936b86b85140f14436 "pdflatex"
-  "main.out" 1765467429 968 6b7af76935036f07985aaab878ed8585 "pdflatex"
-  "main.tex" 1765467404 16798 3715544beae41aa3a3bf8829f1b4448a ""
-  "main.toc" 1765467429 415 1e0e64bae0340103219170e0a30ef8f6 "pdflatex"
+  "c:/Users/Administrator/Desktop/AI Projet/predictive-maintenance-ai/presentation/main.tex" 1765476851 16762 d13160057ffe05d779e9af467e15e284 ""
+  "main.aux" 1765476881 6188 86c4a635e78fd8724528e272d0f1ca2f "pdflatex"
+  "main.nav" 1765476881 3876 8cbb88f81fff79936b86b85140f14436 "pdflatex"
+  "main.out" 1765476881 968 6b7af76935036f07985aaab878ed8585 "pdflatex"
+  "main.tex" 1765476851 16762 d13160057ffe05d779e9af467e15e284 ""
+  "main.toc" 1765476881 415 1e0e64bae0340103219170e0a30ef8f6 "pdflatex"
   (generated)
   "main.aux"
   "main.log"
