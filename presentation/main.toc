@@ -1,6 +1,8 @@
 \babel@toc {french}{}\relax 
 \beamer@sectionintoc {1}{Introduction}{3}{0}{1}
-\beamer@sectionintoc {2}{Contexte et Objectifs}{4}{0}{2}
-\beamer@sectionintoc {3}{Méthodologie}{6}{0}{3}
-\beamer@sectionintoc {4}{Résultats et Analyse}{9}{0}{4}
-\beamer@sectionintoc {5}{Conclusion}{13}{0}{5}
+\beamer@sectionintoc {2}{Contexte et Objectifs}{5}{0}{2}
+\beamer@sectionintoc {3}{Types d'Apprentissage}{8}{0}{3}
+\beamer@sectionintoc {4}{Types d'Architectures Neuronales}{11}{0}{4}
+\beamer@sectionintoc {5}{Méthodologie}{16}{0}{5}
+\beamer@sectionintoc {6}{Résultats et Analyse}{20}{0}{6}
+\beamer@sectionintoc {7}{Conclusion}{25}{0}{7}

@@ -1,8 +1,11 @@
 \documentclass{beamer}
 
 \usetheme{Madrid}
-\usecolortheme{whale}
-
+\usecolortheme{default}
+\useinnertheme{rounded} % Rounded blocks
+\useoutertheme{shadow} % Shadow for depth
+\setbeamercolor{block title}{bg=structure.fg, fg=white} % Contrast for block titles
+\setbeamercolor{block body}{bg=structure.fg!10}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[french]{babel}
@@ -10,11 +13,69 @@
 \usepackage{booktabs}
 \usepackage{enumerate}
 
+% Customize headline to display sections horizontally
+\setbeamertemplate{headline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,dp=1.125ex]{section in head/foot}%
+    \insertsectionnavigationhorizontal{\paperwidth}{}{}%
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+% Customize footer to show subtitle instead of author
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortsubtitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+% Section frame template with blur effect
+\setbeamertemplate{section page}
+{
+  \begin{centering}
+    \begin{beamercolorbox}[sep=12pt,center,rounded=true,shadow=true]{section title}
+      \usebeamerfont{section title}\insertsection\par
+    \end{beamercolorbox}
+  \end{centering}
+}
+
+% Add section frame at the beginning of each section
+\AtBeginSection{
+  \begin{frame}
+    \sectionpage
+  \end{frame}
+}
+
+% Enhanced section highlighting in navigation
+\setbeamertemplate{section in head/foot shaded}[default][50]
+\setbeamercolor{section in head/foot}{fg=structure.fg!50}
+\setbeamercolor{section in head/foot shaded}{fg=structure.fg!20}
+
 % Meta-data
 \title[Maintenance Prédictive]{Application de l'IA en Mécanique : Maintenance Prédictive}
-\subtitle{Projet de fin d'étude}
-\author{Étudiant}
-\institute[]{Département de Génie Mécanique}
+\subtitle[Projet AI en Mcanique]{Projet AI en Mcanique}
+\author{ARKHIS M’HAMMED 
+RADOUANE ELARFAOUI
+FARID ELABISISI
+AMYNE ED-DARIF
+SABANE MOHAMMED
+KHALID LOULIJET}
+\institute[]{École Nationale des Sciences Appliquées \\
+Département Génie Mécanique \\Université Sidi Ben Abdellah
+\\-Fes-}
 \date{\today}
 
 \begin{document}
@@ -39,8 +100,6 @@
         \item \textbf{Approche :} Utilisation de réseaux de neurones artificiels (RNA) sous MATLAB.
     \end{itemize}
 \end{frame}
-
-% Section 2: Contexte et Objectifs
 \section{Contexte et Objectifs}
 \begin{frame}{Problématique}
     Les approches traditionnelles de maintenance présentent des limites :
@@ -74,6 +133,177 @@
     \vspace{0.5cm}
     Basé sur les données de capteurs (température, vitesse, couple, etc.).
 \end{frame}
+% Section 2: Types d'Apprentissage
+\section{Types d'Apprentissage}
+\begin{frame}{Types d'Apprentissage}
+    L'intelligence artificielle utilise différents paradigmes d'apprentissage :
+    \vspace{0.5cm}
+    \begin{block}{1. Apprentissage Supervisé}
+        \begin{itemize}
+            \item Données étiquetées (entrées + sorties connues).
+            \item Objectif : Apprendre une fonction de mapping.
+            \item Exemples : Classification, Régression.
+        \end{itemize}
+    \end{block}
+    \vspace{0.3cm}
+    \begin{block}{2. Apprentissage Non Supervisé}
+        \begin{itemize}
+            \item Données non étiquetées.
+            \item Objectif : Découvrir des patterns cachés.
+            \item Exemples : Clustering, Réduction de dimensionnalité.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Types d'Apprentissage (suite)}
+    \begin{block}{3. Apprentissage par Renforcement}
+        \begin{itemize}
+            \item Agent interagit avec un environnement.
+            \item Apprend par essais-erreurs avec récompenses/pénalités.
+            \item Exemples : Jeux, Robotique, Contrôle optimal.
+        \end{itemize}
+    \end{block}
+    \vspace{0.5cm}
+    \begin{block}{4. Apprentissage Semi-Supervisé}
+        \begin{itemize}
+            \item Combinaison de données étiquetées et non étiquetées.
+            \item Utile quand l'étiquetage est coûteux.
+        \end{itemize}
+    \end{block}
+    \vspace{0.3cm}
+    \begin{alertblock}{Notre Projet}
+        Utilise l'\textbf{Apprentissage Supervisé} (classification binaire : Normal/Panne).
+    \end{alertblock}
+\end{frame}
+
+% Section 3: Types d'Architectures Neuronales
+\section{Types d'Architectures Neuronales}
+\begin{frame}{Régression Linéaire}
+    \textbf{Régression Linéaire :} Modèle le plus simple pour prédire une valeur continue.
+    \vspace{0.3cm}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{block}{Formulation}
+                $$y = w_0 + w_1 x_1 + w_2 x_2 + \ldots + w_n x_n$$
+                où $w_i$ sont les poids et $x_i$ les features.
+            \end{block}
+            \vspace{0.3cm}
+            \begin{itemize}
+                \item \textbf{Avantages :} Simple, interprétable, rapide.
+                \item \textbf{Limites :} Hypothèse de linéarité, ne capture pas les relations complexes.
+            \end{itemize}
+            \vspace{2cm}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            % PLACEHOLDER IMAGE: Régression Linéaire
+            % PROMPT: Image montrant un graphique de régression linéaire avec:
+            % - Nuage de points (scatter plot) de données
+            % - Ligne droite de régression ajustée (fitted line)
+            % - Axes X (variable indépendante) et Y (variable dépendante)
+            % - Éventuellement des résidus ou erreurs visibles
+            % - Style: Professionnel, clair, avec légendes
+            \vspace{-2cm}
+            \begin{figure}
+                \centering
+                 \includegraphics[width=0.95\textwidth]{../linear_regression.png}
+                \caption{Visualisation de la régression linéaire}
+            \end{figure}
+            \vfill
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Réseaux de Neurones Artificiels (RNA)}
+    \textbf{Perceptron Multicouche (MLP) :} Architecture de base des RNA.
+    \vspace{0.3cm}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \textbf{Composants :}
+            \begin{itemize}
+                \item Couche d'entrée
+                \item Couches cachées
+                \item Couche de sortie
+                \item Fonctions d'activation
+            \end{itemize}
+            \vspace{0.3cm}
+            \textbf{Avantages :}
+            \begin{itemize}
+                \item Capture des relations non-linéaires
+                \item Apprentissage automatique de features
+                \item Puissance d'approximation universelle
+            \end{itemize}
+            \vspace{0.3cm}
+            \begin{block}{Notre Architecture}
+                \texttt{patternnet} avec 2 couches cachées (100 et 50 neurones).
+            \end{block}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            % PLACEHOLDER IMAGE: Architecture Réseau de Neurones
+            % PROMPT: Diagramme d'architecture d'un réseau de neurones montrant:
+            % - Couche d'entrée avec plusieurs neurones (cercles/nœuds)
+            % - Une ou plusieurs couches cachées avec connexions
+            % - Couche de sortie
+            % - Flèches/connexions entre les neurones (représentant les poids)
+            % - Labels clairs: "Input Layer", "Hidden Layer(s)", "Output Layer"
+            % - Style: Professionnel, schéma clair, couleurs distinctes par couche
+            \begin{figure}
+                \centering
+                \includegraphics[width=\textwidth]{../neural_network_architecture.png}
+                \caption{Architecture d'un RNA}
+            \end{figure}
+            \vspace{2cm}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Autres Architectures Neuronales}
+    \begin{block}{1. Réseaux de Neurones Convolutifs (CNN)}
+        \begin{itemize}
+            \item Spécialisés pour les images et données spatiales.
+            \item Utilisent des filtres convolutifs.
+            \item Exemples : Reconnaissance d'images, Vision par ordinateur.
+        \end{itemize}
+    \end{block}
+    \vspace{0.3cm}
+    \begin{block}{2. Réseaux de Neurones Récurrents (RNN/LSTM)}
+        \begin{itemize}
+            \item Conçus pour les séries temporelles.
+            \item Mémoire des états précédents.
+            \item Exemples : Prédiction de séquences, Analyse de signaux temporels.
+        \end{itemize}
+    \end{block}
+    \vspace{0.3cm}
+    \begin{block}{3. Deep Learning}
+        \begin{itemize}
+            \item Réseaux avec plusieurs couches profondes.
+            \item Capacité d'apprentissage hiérarchique de représentations.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Comparaison des Approches}
+    \begin{table}
+        \centering
+        \footnotesize
+        \begin{tabular}{lccc}
+            \toprule
+            \textbf{Modèle} & \textbf{Complexité} & \textbf{Interprétabilité} & \textbf{Performance} \\
+            \midrule
+            Régression Linéaire & Faible & Élevée & Limitée \\
+            RNA (MLP) & Moyenne & Moyenne & Bonne \\
+            CNN & Élevée & Faible & Excellente (images) \\
+            LSTM & Élevée & Faible & Excellente (séries temporelles) \\
+            \bottomrule
+        \end{tabular}
+        \caption{Comparaison des architectures pour la maintenance prédictive}
+    \end{table}
+    \vspace{0.3cm}
+    \begin{alertblock}{Choix pour notre projet}
+        RNA (MLP) : Bon compromis entre complexité et performance pour données tabulaires.
+    \end{alertblock}
+\end{frame}
+
+
 
 % Section 3: Méthodologie
 \section{Méthodologie}
@@ -116,11 +346,13 @@
 \end{frame}
 
 \begin{frame}{Architecture du Réseau}
-    \begin{figure}
-        \centering
-        \includegraphics[width=0.9\textwidth]{../rapport/src/NN_Training_Tool_Summary.jpg}
-        \caption{Résumé de l'architecture et de l'entraînement (MATLAB)}
-    \end{figure}
+    \begin{flushleft}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.3\textwidth]{../rapport/src/NN_Training_Tool_Summary.jpg}
+            \caption{l'architecture et de l'entraînement (MATLAB)}
+        \end{figure}
+    \end{flushleft}
 \end{frame}
 
 % Section 4: Résultats
@@ -166,14 +398,18 @@
 \begin{frame}{Validation et Erreur}
     \begin{columns}
         \begin{column}{0.5\textwidth}
-            \centering
-            \includegraphics[width=\textwidth]{../rapport/src/MSE_Performance_Plot.jpg}
-            \caption{Performance (Cross-Entropy)}
+            \begin{figure}
+                \centering
+                \includegraphics[width=\textwidth]{../rapport/src/MSE_Performance_Plot.jpg}
+                \caption{Performance (Cross-Entropy)}
+            \end{figure}
         \end{column}
         \begin{column}{0.5\textwidth}
-            \centering
-            \includegraphics[width=\textwidth]{../rapport/src/Error_Histogram_Plot.jpg}
-            \caption{Histogramme des erreurs}
+            \begin{figure}
+                \centering
+                \includegraphics[width=\textwidth]{../rapport/src/Error_Histogram_Plot.jpg}
+                \caption{Histogramme des erreurs}
+            \end{figure}
         \end{column}
     \end{columns}
     \vspace{0.2cm}
